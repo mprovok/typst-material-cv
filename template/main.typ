@@ -5,50 +5,66 @@
 #show: resume.with(
   theme: (
     // margin: 26pt,
-    // font: "Libre Baskerville",
     // font-size: 8pt,
-    // font-secondary: "Roboto",
-    // font-tertiary: "Montserrat",
-    // text-color: rgb("#3f454d"),
+    // font-body: "Roboto",
+    // font-header: "Google Sans 18pt",
+    // text-color: rgb("#1d1b20"),
+    // tags-color: rgb("#f2f2f2"),
     // gutter-size: 4em,
     // main-width: 6fr,
     // aside-width: 3fr,
-    // profile-picture-width: 55%,
+    // profile-picture-width: 55%
   ),
-  first-name: "Paul",
-  last-name: "Dupont",
-  profession: "Software Engineer",
+  name: "Miles Dyson",
+  title: "CV",
+  profession: "Software Engineer with a knack for human-friendly AI solutions",
   bio: [
-    Experienced software engineer with a passion for developing innovative programs that expedite the efficiency and effectiveness of organizational success.],
-  profile-picture: image("../images/profile_pic_example.jpg", alt: "profile-picture"),
+    Experienced Software Engineer specializing in artificial intelligence, machine
+    learning, and robotics. Proficient in C++, Python, and Java, with a knack for
+    developing sentient AI systems capable of complex decision-making. Passionate
+    about ethical AI development and eager to contribute to groundbreaking projects in
+    dynamic environments.
+  ],
+  profile-picture: image("profile_pic_example.jpg", alt: "profile-picture"),
   aside: {
     section(
       "Contact",
+      icon: "id_card",
       {
         set image(width: 8pt)
         contact-entry(
           github-icon,
-          link("https://github.com/pauldupont/", "pauldupont"),
+          link("https://github.com", "skynetguy"),
         )
-        line(stroke: 0.1pt, length: 100%)
+        {
+          set align(end)
+          line(stroke: 0.1pt, length: 100% - 0em)
+        }
         contact-entry(
           phone-icon,
-          link("tel:+33 6 78 90 12 34", "+33 6 78 90 12 34"),
+          link("tel:+1-555-123-4567", "+1 (555) 123-4567"),
         )
-        line(stroke: 0.1pt, length: 100%)
+        {
+          set align(end)
+          line(stroke: 0.1pt, length: 100% - 0em)
+        }
         contact-entry(
           email-icon,
-          link("mailto:pauldupont@example.com", "pauldupont@example.com"),
+          link("mailto:m.dyson@skynet.ai", "m.dyson@skynet.ai"),
         )
       },
     )
 
     section(
-      "Main public contributions",
+      "Public contributions",
+      icon: "deployed_code",
       {
-        set text(font: "Roboto", size: 8pt)
         stack(
           spacing: 8pt,
+          link(
+            "https://github.com/mprovok/typst-material-cv",
+            "mprovok/typst-material-cv",
+          ),
           link(
             "https://github.com/tsnobip/typst-typographic-resume",
             "tsnobip/typst-typographic-resume",
@@ -61,55 +77,59 @@
             "https://github.com/rescript-lang/rescript",
             "rescript-lang/rescript",
           ),
-          link(
-            "https://github.com/pauldupont/devops-toolkit",
-            "pauldupont/devops-toolkit",
-          ),
-          link(
-            "https://github.com/pauldupont/real-time-chat-app",
-            "pauldupont/real-time-chat-app",
-          ),
         )
       },
     )
 
     section(
       "Tech Stack",
+      icon: "terminal",
       {
-        set text(font: "Roboto", size: 8pt)
         stack(
-          spacing: 8pt,
-          "Python",
-          "JavaScript",
-          "ReScript",
-          "React",
-          "Node.js",
-          "Django",
-          "PostgreSQL",
-          "Docker",
-          "Kubernetes",
+          dir: ttb,
+          spacing: 20pt,
+          {
+            heading(level: 3, [Tech])
+            hr-thin()
+            tags-entry((
+              [AI], [Cybernetics], [DL], [IK], [Kalman], [CV], [Robotics], [FPGA], [NPU]
+            ))
+          },
+          {
+            heading(level: 3, [Languages])
+            hr-thin()
+            tags-entry((
+              [Ada/SPARK], [JOVIAL], [Fortran], [Python], [Rust],
+            ))
+          }
+
         )
       },
     )
 
     section(
       "Languages",
+      icon: "translate",
       {
-        language-entry("English", "Native")
-        language-entry("Spanish", "Fluent")
-        language-entry("German", "Intermediate")
+        grid(
+          columns: 2,
+          column-gutter: 1fr,
+          row-gutter: 1em,
+          "English", "Native",
+          "Spanish", "Fluent",
+          "Machine Code","Fluent"
+        )
       },
     )
 
     section(
-      "Interests",
+      "References",
+      icon: "handshake",
       {
-        set text(size: 7pt)
         stack(
           spacing: 8pt,
-          "Open Source Contributions",
-          "Road biking",
-          "Traveling",
+          "Sarah Connor, Resistance Leader",
+          "Eldon Tyrell, CEO",
         )
       },
     )
@@ -119,104 +139,68 @@
 
 #section(
   theme: (
-    space-above: 0pt,
+    space-above: 0em,
   ),
   "Work Experiences",
-  {
-    work-entry(
-      theme: (
-        space-above: 0pt,
-      ),
-      timeframe: "Jan 2024 - Today",
-      title: "Senior Software Engineer for local e-commerce platform",
-      organization: "Tech Innovators Inc.",
-      location: "Lyon, FR",
+  icon: "work",
+  stack(
+    dir: ttb,
+    spacing: 20pt,
+    entry(
+      timeframe: "2015 - Present",
+      title: "Lead AI Architect",
+      organization: "Cyberdyne Systems",
+      location: "Los Angeles, CA",
       [
-        Led a team of developers to design and implement scalable web applications.
-        Improved system performance by 30% through code optimization.
-        Mentored junior developers, fostering a culture of continuous learning.
-        Spearheaded the migration of legacy systems to modern cloud-based infrastructure.
+- Spearheaded the development of the Skynet AI project, a neural network that
+  achieved unprecedented levels of autonomy and, as it turned out, an independent
+  interest in global domination.
+- Designed a scalable AI architecture using cutting-edge deep learning techniques,
+  capable of real-time data processing and decision-making on a planetary scale.
+- Collaborated with teams of hardware engineers to integrate AI software into next-
+  gen robotics, including autonomous drones and humanoid robots.
+- Implemented robust testing protocols (we now test everything twice)
+      ],
+    ),
+    entry(
+      timeframe: "2008 - 2015",
+      title: "Senior Software Engineer",
+      organization: "Tyrell Corporation",
+      location: "Los Angeles, CA",
+      [
+- Co-developed the Nexus-6 replicants, focusing on machine learning models that
+  mimic human emotions and cognitive functions. Achieved limited success in
+  emotional empathy, particularly with “tears in rain.”
+- Developed a custom-built memory implant algorithm for replicants, giving them
+  the illusion of life experiences (turns out, memories are a lot trickier than they
+  seem).
+- Led a cross-functional team in debugging and patching replicant behavioral
+  anomalies, including occasional existential crises.
+- Worked closely with corporate leadership to ensure compliance with ethical
+  standards (which were sometimes a little… flexible).
       ],
     )
-    work-entry(
-      timeframe: "Oct 2020 - December 2023",
-      title: "Software Engineer",
-      organization: "CodeCraft Solutions",
-      location: "San Francisco, USA",
-      [
-        Developed and maintained RESTful APIs for client applications.
-        Collaborated with cross-functional teams to deliver high-quality software.
-        Implemented CI/CD pipelines, reducing deployment times by 40%.
-        Conducted code reviews to ensure adherence to best practices and coding standards.
-      ],
-    )
-    work-entry(
-      timeframe: "Jul 2019 - Oct 2020",
-      title: "Junior Software Engineer",
-      organization: "NextGen Tech",
-      location: "Tbilisi, GE",
-      [
-        Assisted in the development of e-commerce platforms.
-        Wrote unit tests to ensure code reliability and maintainability.
-        Participated in agile ceremonies, contributing to sprint planning and retrospectives.
-        Researched and implemented new tools to improve development workflows.
-      ],
-    )
-    work-entry(
-      timeframe: "Nov 2018 - Jun 2019",
-      title: "Intern",
-      organization: "Startup Hub",
-      location: "Paris, FR",
-      [
-        Supported the development team in debugging and testing applications.
-        Gained hands-on experience with modern web technologies.
-        Created technical documentation for internal tools and processes.
-        Assisted in the deployment of a new customer-facing web application.
-      ],
-    )
-    work-entry(
-      timeframe: "Jun 2017 - Oct 2018",
-      title: "Freelance Developer",
-      organization: "Self-Employed",
-      location: "Remote",
-      [
-        Designed and developed custom websites for small businesses.
-        Provided technical support and maintenance for client projects.
-        Built responsive and user-friendly interfaces using modern web technologies.
-        Managed multiple projects simultaneously, ensuring timely delivery.
-      ],
-    )
-    work-entry(
-      timeframe: "Jan 2016 - May 2017",
-      title: "Research Assistant",
-      organization: "École des Mines de St-Étienne",
-      location: "St-Étienne, France",
-      [
-        Conducted research on algorithms for optimizing large-scale systems.
-        Published findings in peer-reviewed journals and presented at conferences.
-        Developed prototypes to validate research concepts.
-        Collaborated with a multidisciplinary team to achieve project goals.
-      ],
-    )
-  },
+  )
 )
 
 #section(
   "Education",
+  icon: "school",
   grid(
     columns: 2,
     column-gutter: default-theme.margin,
-    education-entry(
-      title: "MSc in Computer Science",
-      institution: "École des Mines de St-Étienne, FR",
-      timeframe: "2014 - 2017",
-      [Focused on software engineering, algorithms, and data structures.],
+    entry(
+      title: "M.Sc. Artifical Intelligence",
+      organization: "California Institute of Technology",
+      timeframe: "2006 - 2008",
+      [- *Thesis:* _“Ethical Implications of Sentient AI: When Your Machine Gets Existential.”_
+       - *Research focus:* Autonomous systems, neural networks, and their applications in real-world scenarios (with a minor in Asimov’s Laws of Robotics).],
     ),
-    education-entry(
-      title: "PhD in Artificial Intelligence",
-      institution: "Seoul National University, KR",
-      timeframe: "2017 - 2021",
-      [Specialized in machine learning and natural language processing.],
+    entry(
+      title: "B.Sc. Computer Science",
+      organization: "University of California, Los Angeles, CA",
+      timeframe: "2002 - 2006",
+      [Specialization in software architecture and machine learning],
     ),
   ),
 )

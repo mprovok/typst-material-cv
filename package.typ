@@ -1,20 +1,19 @@
 #let default-theme = (
   margin: 26pt,
-  font: "Libre Baskerville",
   font-size: 8pt,
-  font-secondary: "Roboto",
-  font-tertiary: "Montserrat",
-  text-color: rgb("#3f454d"),
+  font-body: "Roboto",
+  font-header: "Google Sans 18pt",
+  text-color: rgb("#1d1b20"),
+  tags-color: rgb("#f2f2f2"),
   gutter-size: 4em,
   main-width: 6fr,
   aside-width: 3fr,
-  profile-picture-width: 55%,
+  profile-picture-width: 55%
 )
 
-
 #let resume(
-  first-name: "",
-  last-name: "",
+  title: "CV",
+  name: "",
   profession: "",
   bio: "",
   profile-picture: none,
@@ -22,7 +21,7 @@
   aside: [],
   main,
 ) = {
-  // Function to pick a key from the theme, or a default if not provided.
+  // Function to pick a key from the theme, or a default if not provided
   let th(key, default: none) = {
     return if key in theme and theme.at(key) != none {
       theme.at(key)
@@ -43,91 +42,76 @@
       right: th("margin"),
     ),
   )
+  set list(marker: [‣])
+
+  set document(
+    title: title,
+    author: name,
+  )
 
   // Fix for https://github.com/typst/typst/discussions/2919
   show heading.where(level: 1): set text(size: th("font-size"))
   show heading.where(level: 2): set text(size: th("font-size"))
   show heading.where(level: 3): set text(size: th("font-size"))
 
-  show heading.where(level: 1): set text(font: th("font-tertiary"), weight: "light")
+  show heading.where(level: 1): set text(font: th("font-header"), weight: 600)
+  show heading.where(level: 2): set text(font: th("font-header"))
+  show heading.where(level: 3): set text(font: th("font-header"))
 
-  set text(font: th("font"), size: th("font-size"), fill: th("text-color"))
-
-  set block(above: 10pt, below: 8pt, spacing: 10pt)
+  set text(font: th("font-body"), size: th("font-size"), fill: th("text-color"))
 
   set grid(columns: (th("gutter-size"), 1fr))
 
-  grid(
-    columns: (th("aside-width"), th("margin"), th("main-width")),
+  stack(
+    dir: ttb,
+    spacing: 16pt,
+    stack(
+      dir: ttb,
+      spacing: 8pt,
+      {
+        show heading: set text(size: 26pt)
+        heading(level: 1, name)
+      },
+      {
+        show heading: set text(size: 11pt, weight: 400, style: "italic")
+        heading(level: 3, profession)
+      }
+    ),
+    grid(
+      columns: (th("aside-width"), th("main-width")),
+      column-gutter: th("margin"),
 
-    // Aside.
-    {
+      // Aside
       {
         {
-          show heading: set block(above: 0pt, below: 0pt)
-          show heading: set text(size: 12pt, weight: "regular", font: th("font"), fill: th("text-color"))
-          heading(level: 2, first-name)
-        }
-        {
-          show heading: set block(above: 3pt, below: 0pt)
-          show heading: set text(size: 26pt, weight: "regular", font: th("font"), fill: th("text-color"))
+          // Profile picture
+          if profile-picture != none {
+            v(0em)
+            set block(radius: 100%, clip: true, below: 2em)
+            set align(center)
+            set image(width: th("profile-picture-width"))
+            profile-picture
+          }
 
-          heading(level: 1, last-name)
-        }
-        {
-          show heading: set block(above: 10pt, below: 0pt)
-          show heading: set text(weight: "light", font: th("font-tertiary"))
-          heading(level: 3, upper(profession))
-        }
-
-        if profile-picture != none {
-          set block(radius: 100%, clip: true, above: 1fr, below: 1fr)
-          set align(center)
-          set image(width: th("profile-picture-width"))
-          profile-picture
-        } else {
-          v(1fr)
+          // Bio
+          {
+            set text(weight: 300, style: "italic", hyphenate: true)
+            set par(leading: 0.8em)
+            bio
+          }
         }
 
+        aside
+      },
 
-        set text(weight: "light", style: "italic", hyphenate: true)
-        set par(leading: 1.0em)
-        bio
+      // Content
+      {
+        v(-2em)
+        v(-6pt)
+        main
       }
-
-      aside
-    },
-
-    // Empty space.
-    { },
-
-    // Content.
-    main
+    )
   )
-}
-
-
-#let section(
-  theme: (),
-  title,
-  body,
-) = {
-  show heading.where(level: 1): set align(theme.align-title) if "align-title" in theme
-  show heading.where(level: 1): set align(end) if not "align-title" in theme
-
-  if "space-above" not in theme {
-    v(1fr)
-  } else {
-    v(theme.space-above)
-  }
-
-
-  heading(level: 1, upper(title))
-  {
-    set block(above: 2pt, below: 14pt)
-    line(stroke: 1pt, length: 100%)
-  }
-  body
 }
 
 #let contact-entry(
@@ -135,45 +119,82 @@
   gutter,
   right,
 ) = {
-  set grid(columns: (theme.gutter-size, 1fr)) if "gutter-size" in theme
-  set text(font: theme.font-secondary) if "font-secondary" in theme
-  set text(font: default-theme.font-secondary) if "font-secondary" not in theme
-  set text(size: theme.font-size) if "font-size" in theme
-
-  grid(
-    {
-      context {
-        set align(center) if not "align-gutter" in theme
-        set align(theme.align-gutter) if "align-gutter" in theme
-        gutter
-      }
-    },
-    {
-      right
-    }
-  )
-}
-
-#let language-entry(
-  theme: (),
-  language,
-  level,
-) = {
-  set text(font: theme.font) if "font-secondary" in theme
-  set text(font: default-theme.font-secondary) if "font-secondary" not in theme
-  set text(size: theme.font-size) if "font-size" in theme
-
   stack(
     dir: ltr,
-    language,
-    {
-      set align(end)
-      level
-    },
+    spacing: 2em,
+    gutter,
+    right
   )
 }
 
-#let work-entry(
+#let chip(label, color) = {
+  box(
+    text(weight: 500, label),
+    fill: rgb(color),
+    radius: 3pt,
+    inset: (x: 0.5em),
+    outset: (y: 0.5em)
+  )
+}
+
+#let tags-entry(
+  theme: (),
+  tags,
+) = {
+  let color = if "color" in theme {
+    theme.color
+  } else {
+    default-theme.tags-color
+  }
+
+  set par(leading: 1.5em)
+  tags.map(tag => chip(tag, color)).join(" ")
+}
+
+#let hr-thick() = {
+  set block(above: 6pt, below: 14pt)
+  line(stroke: 1pt, length: 100%)
+}
+
+#let hr-thin() = {
+  set block(above: 6pt, below: 10pt)
+  line(stroke: 0.1pt, length: 100%)
+}
+
+#let section(
+  theme: (),
+  title,
+  body,
+  icon: ""
+) = {
+  if "space-above" not in theme {
+    v(1fr)
+  } else {
+    v(theme.space-above)
+  }
+
+  {
+    show heading: set align(theme.align-title) if "align-title" in theme
+    show heading: set align(end) if not "align-title" in theme
+    heading(level: 2, {
+      set align(bottom)
+      stack(
+        dir: ltr,
+        text(upper(title)),
+        if icon != "" {
+          h(0.3em)
+          text(font: "Material Symbols Rounded", weight: 400, size: 16pt, icon, baseline: 5pt)
+        }
+      )
+    })
+  }
+
+  hr-thick()
+
+  body
+}
+
+#let entry(
   theme: (),
   timeframe: "",
   title: "",
@@ -181,100 +202,35 @@
   location: "",
   body,
 ) = {
-  set text(size: theme.font-size) if "font-size" in theme
-
-  if "space-above" not in theme {
-    v(1fr)
-  } else {
-    v(theme.space-above)
-  }
-  {
-    set text(font: theme.font-secondary) if "font-secondary" in theme
-    set text(font: default-theme.font-secondary) if "font-secondary" not in theme
-    set block(above: 0pt, below: 0pt)
+  stack(
+    dir: ttb,
+    spacing: 5pt,
     stack(
-      dir: ttb,
-      spacing: 5pt,
-      stack(
-        dir: ltr,
-        spacing: 1fr,
-        context {
-          set text(weight: "light", fill: text.fill.lighten(30%))
-          timeframe
-        },
-        context {
-          set align(horizon)
-          set text(weight: "light", fill: text.fill.lighten(30%))
-          location
-        },
-      ),
-      {
-        {
-          set text(weight: "bold")
-          upper(title)
-        }
-        " – "
-        organization
+      dir: ltr,
+      spacing: 1fr,
+      context {
+        set text(weight: 300, fill: text.fill.lighten(30%))
+        timeframe
       },
-    )
-  }
-  {
-    set block(above: 6pt, below: 8pt)
-    line(stroke: 0.1pt, length: 100%)
-  }
+      context {
+        set align(horizon)
+        set text(weight: 300, fill: text.fill.lighten(30%))
+        location
+      },
+    ),
+    heading(level: 3, title),
+    organization
+  )
+
+  hr-thin()
+
   context {
-    set text(fill: text.fill.lighten(30%))
-    set par(leading: 1em)
+    set par(leading: 0.8em)
     body
   }
 }
 
-#let education-entry(
-  theme: (),
-  timeframe: "",
-  title: "",
-  institution: "",
-  location: "",
-  body,
-) = {
-  set text(size: theme.font-size) if "font-size" in theme
+#let github-icon = box(image("images/github-brands.svg", alt: "github icon", width: 12pt, height: 12pt), inset: (y: -0.3em))
 
-  {
-    set text(font: theme.font-secondary) if "font-secondary" in theme
-    set text(font: default-theme.font-secondary) if "font-secondary" not in theme
-    stack(
-      spacing: 5pt,
-      {
-        set text(weight: "bold")
-        upper(title)
-      },
-      institution,
-    )
-
-    {
-      set block(above: 6pt, below: 8pt)
-      line(stroke: 0.1pt, length: 100%)
-    }
-  }
-
-
-  context {
-    set text(weight: "light", fill: text.fill.lighten(30%))
-    stack(
-      spacing: 8pt,
-      {
-        set text(font: theme.font) if "font" in theme
-        body
-      },
-      {
-        set text(font: theme.font-secondary) if "font-secondary" in theme
-        set text(font: default-theme.font-secondary) if "font-secondary" not in theme
-        timeframe
-      },
-    )
-  }
-}
-
-#let github-icon = image("images/github-brands.svg", alt: "github icon")
-#let phone-icon = image("images/phone-solid.svg", alt: "phone icon")
-#let email-icon = image("images/envelope-solid.svg", alt: "email icon")
+#let phone-icon = box(text(font: "Material Symbols Rounded", weight: 400, size: 12pt, "phone_enabled", variations: ("FILL": 1)), inset: (y: -0.3em))
+#let email-icon = box(text(font: "Material Symbols Rounded", weight: 400, size: 12pt, "mail", variations: ("FILL": 0)), inset: (y: -0.3em))
